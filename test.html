@@ -1,0 +1,34 @@
+<html>
+
+<head>
+    <title>Test Canvas</title>
+    <style>
+        #canvas-wrapper {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        canvas {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="canvas-wrapper">
+        <h1>Asteroids</h1>
+        <canvas id="mycanvas" width="500" height="500">
+            <p>You messed up the canvas somehow</p>
+        </canvas>
+    </div>
+    <script src="utility.js"></script>
+    <script src="input.js"></script>
+    <script src="player.js"></script>
+    <script src="main.js"></script>
+</body>
+
+</html>
