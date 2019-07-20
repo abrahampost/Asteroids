@@ -1,24 +1,17 @@
-var canvas = document.querySelector("#mycanvas");
-var ctx = canvas.getContext("2d");
-
-var bgColor = "#fff";
-var fgColor = "#222";
-
-const figure = [
-    [0, 0],
-    [5, 10],
-    [0, 8],
-    [-5, 10],
-];
-
-var mainPlayer = new Player(canvas.width / 2, canvas.height / 2, figure, ctx, canvas);
+var mainPlayer = new Player(canvas.width / 2, canvas.height / 2);
 
 function start() {
-    clearBoard(canvas, ctx);
+    clearBoard();
+    makeAsteroid();
 }
 
 function update() {
-    mainPlayer.update();
+    clearBoard();
+    for (let obj of gameObjects) {
+        obj.update();
+        obj.move();
+        obj.draw();
+    };
 }
 
 start();

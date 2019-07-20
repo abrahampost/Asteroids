@@ -1,4 +1,4 @@
-var fillPath = (ctx, points) => {
+var fillPath = (points) => {
     ctx.beginPath();
     ctx.moveTo(points[0][0], points[0][1]);
     for (let point of points.slice(1)) {
@@ -8,7 +8,7 @@ var fillPath = (ctx, points) => {
     ctx.fill();
 };
 
-var strokePath = (ctx, points) => {
+var strokePath = (points) => {
     ctx.beginPath();
     ctx.moveTo(points[0][0], points[0][1]);
     for (let point of points.slice(1)) {
@@ -33,4 +33,10 @@ var transformAll = (points, rotation, offsetX, offsetY) => {
     return points.map((point) => {
         return transformPoint(point[0], point[1], rotation, offsetX, offsetY);
     })
+}
+
+var randBool = () => {
+    // res will be equal to either a 0 or 1
+    let res = Math.round(Math.random());
+    return res === 1;
 }
