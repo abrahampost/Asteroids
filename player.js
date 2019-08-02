@@ -11,6 +11,8 @@ class Player extends GameObject{
     constructor(x, y) {
         super(x, y, 0, 0, playerFigure, false);
         this.acceleration = 2;
+        this.hitpoints = 3;
+        this.invincible = false;
     }
 
     update() {
@@ -53,5 +55,21 @@ class Player extends GameObject{
 
     changeRotation(amount) {
         this.rotation += amount / 10;
+    }
+
+    handleCollision() {
+        if (this.hitpoints === 0) {
+            //TODO: Endgame stuff here
+            alert("GAME OVER");
+        } else {
+            this.hitpoints -= 1;
+        }
+        this.x = canvas.width / 2;
+        this.y = canvas.height / 2;
+        this.invincible = true;
+        setTimeout(() => {
+            this.invincible = false
+            console.log("No longer invincible");
+        }, 3000);
     }
 }
