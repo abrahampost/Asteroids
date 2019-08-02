@@ -5,3 +5,5 @@ var gameObjects = [ ];
 
 var bgColor = "#222";
 var fgColor = "#30dd50";
+
+var numStartingAsteroids = 4;

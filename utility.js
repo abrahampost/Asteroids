@@ -86,3 +86,9 @@ var scaleFigure = (figure, scale) => {
 var getDistance = (x1, y1, x2, y2) => {
     return Math.sqrt((x2 - x1)**2 + (y2 - y1)**2);
 }
+
+var removeObject = (passedObj) => {
+    gameObjects = gameObjects.filter((obj) => {
+        return obj !== passedObj;
+    });
+}

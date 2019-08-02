@@ -6,15 +6,20 @@ const baseFigure = [
     [10, 0], [10, -4], [9, -5], [9, -6], [8, -7], [7, -8], [6, -9], [5, -10], [4, -10], [3, -11], [-3, -11],
 ];
 
-var makeAsteroid = function () {
+var makeFreshAsteroid = function() {
+    let randSize = randFrom(1, 3);
+    let y = randFrom(0, canvas.height);
+    makeAsteroid(0, y, randSize);
+}
+
+var makeAsteroid = function (x, y, scale) {
     //TODO: Give a random starting coordinate on the boundaries of the canvas
-    let coordinate = { x: 0, y: 0 };
+    let coordinate = { x: x, y: y };
     let rotation = randFrom(0, 360);
     let speed = randFrom(3, 6);
-    let size = randFrom(1, 3);
     //TODO: Deform figure to make it look "Asteroid"-ish
-    let sizedFigure = scaleFigure(baseFigure, size);
-    new Asteroid(coordinate.x, coordinate.y, rotation, speed, size, sizedFigure);
+    let sizedFigure = scaleFigure(baseFigure, scale);
+    new Asteroid(coordinate.x, coordinate.y, rotation, speed, scale, sizedFigure);
 }
 
 class Asteroid extends GameObject {
@@ -33,18 +38,26 @@ class Asteroid extends GameObject {
     }
 
     update() {
-        this.checkCollision();
+        this.checkPlayerCollision();
     }
 
-    checkCollision() {
+    checkPlayerCollision() {
         let collisionDistance = 11 * this.size;
         let distanceToPlayer = getDistance(this.x, this.y, mainPlayer.x, mainPlayer.y);
         if (!mainPlayer.invincible && (distanceToPlayer < collisionDistance)) {
             mainPlayer.handleCollision();
             //TODO: Better system to remove asteroid
-            gameObjects.filter((obj) => {
-                return obj !== this;
-            });
+            removeObject(this);
+        }
+    }
+
+    takeFire() {
+        score += this.size * 20;
+        console.log("Taking fire")
+        removeObject(this);
+        if (this.size > 1) {
+            makeAsteroid(this.x, this.y, this.size - 1);
+            makeAsteroid(this.x, this.y, this.size - 1);
         }
     }
 }

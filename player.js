@@ -1,4 +1,5 @@
 const MAX_SPEED = 10;
+const MAX_BULLETS = 3;
 
 const playerFigure = [
     [0, 0],
@@ -13,6 +14,8 @@ class Player extends GameObject{
         this.acceleration = 2;
         this.hitpoints = 3;
         this.invincible = false;
+        this.bulletsFired = 0;
+        this.canFire = true;
     }
 
     update() {
@@ -32,6 +35,9 @@ class Player extends GameObject{
         }
         if (pressed.RIGHT) {
             this.changeRotation(this.acceleration);
+        }
+        if (pressed.SPACE) {
+            this.fire();
         }
 
     }
@@ -57,7 +63,25 @@ class Player extends GameObject{
         this.rotation += amount / 10;
     }
 
+    fire() {
+        if (this.bulletsFired < MAX_BULLETS && this.canFire) {
+            let bullet = new Bullet(this.x, this.y, this.rotation, 12);
+            this.bulletsFired += 1;
+            this.canFire = false; //This acts as a bullet cooldown
+            setTimeout(() => {
+                this.canFire = true;
+            }, 500);
+            setTimeout(() => {
+                gameObjects = gameObjects.filter((obj) => {
+                    return obj !== bullet;
+                });
+                this.bulletsFired -= 1;
+            }, 1500)
+        }
+    }
+
     handleCollision() {
+        score -= 100;
         if (this.hitpoints === 0) {
             //TODO: Endgame stuff here
             alert("GAME OVER");
@@ -69,7 +93,6 @@ class Player extends GameObject{
         this.invincible = true;
         setTimeout(() => {
             this.invincible = false
-            console.log("No longer invincible");
         }, 3000);
     }
 }

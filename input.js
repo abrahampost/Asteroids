@@ -3,18 +3,19 @@ const keycode = {
     DOWN: '40',
     LEFT: '37',
     RIGHT: '39',
+    SPACE: '32'
 };
 
 var pressed = {
     UP: false,
     DOWN: false,
     LEFT: false,
-    RIGHT: false
+    RIGHT: false,
+    SPACE: false,
 };
 
 function keyPressed(e) {
     e = e || window.event;
-    
     if (e.keyCode == keycode.UP) {
         pressed.UP = true;
     } else if (e.keyCode == keycode.DOWN) {
@@ -23,6 +24,8 @@ function keyPressed(e) {
         pressed.LEFT = true;
     } else if (e.keyCode == keycode.RIGHT) {
         pressed.RIGHT = true;
+    } else if (e.keyCode == keycode.SPACE) {
+        pressed.SPACE = true;
     }
 }
 
@@ -37,6 +40,8 @@ function keyReleased(e) {
         pressed.LEFT = false;
     } else if (e.keyCode == keycode.RIGHT) {
         pressed.RIGHT = false;
+    } else if (e.keyCode == keycode.SPACE) {
+        pressed.SPACE = false;
     }
 }
 

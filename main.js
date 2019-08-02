@@ -1,8 +1,11 @@
 var mainPlayer = new Player(canvas.width / 2, canvas.height / 2);
+var score = 0;
 
 function start() {
     clearBoard();
-    makeAsteroid();
+    for(let i = 0; i < numStartingAsteroids; i++) {
+        makeFreshAsteroid();
+    }
 }
 
 function update() {
