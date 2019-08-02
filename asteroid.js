@@ -48,11 +48,14 @@ class Asteroid extends GameObject {
 
     checkPlayerCollision() {
         let collisionDistance = 11 * this.size;
-        let distanceToPlayer = getDistance(this.x, this.y, mainPlayer.x, mainPlayer.y);
-        if (gameActive && !mainPlayer.invincible && (distanceToPlayer < collisionDistance)) {
-            mainPlayer.handleCollision();
-            //TODO: Better system to remove asteroid
-            removeObject(this);
+        let playerFigure = mainPlayer.getTransformedFigure();
+        for(let point of playerFigure) {
+            let distanceToPlayer = getDistance(this.x, this.y, point[0], point[1]);
+            if (gameActive && !mainPlayer.invincible && (distanceToPlayer < collisionDistance)) {
+                mainPlayer.handleCollision();
+                //TODO: Better system to remove asteroid
+                removeObject(this);
+            }
         }
     }
 

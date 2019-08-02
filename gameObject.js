@@ -30,7 +30,7 @@ class GameObject {
     }
 
     draw() {
-        let newFigure = transformAll(this.figure, this.rotation, this.x, this.y);
+        let newFigure = this.getTransformedFigure();
 
         if (this.filled) {
             ctx.fillStyle = fgColor;
@@ -39,5 +39,9 @@ class GameObject {
             ctx.strokeStyle = fgColor;
             strokePath(newFigure);
         }
+    }
+
+    getTransformedFigure() {
+        return transformAll(this.figure, this.rotation, this.x, this.y);
     }
 }
