@@ -22,6 +22,11 @@ var makeAsteroid = function (x, y, scale) {
     new Asteroid(coordinate.x, coordinate.y, rotation, speed, scale, sizedFigure);
 }
 
+var asteroidFactoryTimer = () => {
+    setTimeout(asteroidFactoryTimer, randFrom(7, 10) * 1000);
+    makeFreshAsteroid();
+}
+
 class Asteroid extends GameObject {
     /**
      * 
@@ -44,7 +49,7 @@ class Asteroid extends GameObject {
     checkPlayerCollision() {
         let collisionDistance = 11 * this.size;
         let distanceToPlayer = getDistance(this.x, this.y, mainPlayer.x, mainPlayer.y);
-        if (!mainPlayer.invincible && (distanceToPlayer < collisionDistance)) {
+        if (gameActive && !mainPlayer.invincible && (distanceToPlayer < collisionDistance)) {
             mainPlayer.handleCollision();
             //TODO: Better system to remove asteroid
             removeObject(this);
@@ -56,8 +61,10 @@ class Asteroid extends GameObject {
         console.log("Taking fire")
         removeObject(this);
         if (this.size > 1) {
-            makeAsteroid(this.x, this.y, this.size - 1);
-            makeAsteroid(this.x, this.y, this.size - 1);
+            let numSpawn = randFrom(2, 4);
+            for(let i = 0; i < numSpawn; i++) {
+                makeAsteroid(this.x, this.y, this.size - 1);
+            }
         }
     }
 }

@@ -12,7 +12,6 @@ class Player extends GameObject{
     constructor(x, y) {
         super(x, y, 0, 0, playerFigure, false);
         this.acceleration = 2;
-        this.hitpoints = 3;
         this.invincible = false;
         this.bulletsFired = 0;
         this.canFire = true;
@@ -82,17 +81,17 @@ class Player extends GameObject{
 
     handleCollision() {
         score -= 100;
-        if (this.hitpoints === 0) {
-            //TODO: Endgame stuff here
-            alert("GAME OVER");
+        if (lives === 0) {
+            console.log("Called game over");
+            gameOver();
         } else {
-            this.hitpoints -= 1;
+            lives -= 1;
+            this.x = canvas.width / 2;
+            this.y = canvas.height / 2;
+            this.invincible = true;
+            setTimeout(() => {
+                this.invincible = false
+            }, 3000);
         }
-        this.x = canvas.width / 2;
-        this.y = canvas.height / 2;
-        this.invincible = true;
-        setTimeout(() => {
-            this.invincible = false
-        }, 3000);
     }
 }
