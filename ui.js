@@ -8,6 +8,9 @@ const scoreColor = "#fff";
 
 const warningColor = "#F88";
 
+/**
+ * Draws the life count in the lower lefthand portion of the screen.
+ */
 var drawLifeCount = () => {
     let prevColor = ctx.fillStyle;
     ctx.fillStyle = lifeColor;
@@ -15,6 +18,9 @@ var drawLifeCount = () => {
     ctx.fillStyle = prevColor;
 }
 
+/**
+ * Draws the score in the bottom righthand portion of the screen
+ */
 var drawScore = () => {
     let prevColor = ctx.fillStyle;
     ctx.fillStyle = scoreColor;
@@ -22,6 +28,9 @@ var drawScore = () => {
     ctx.fillStyle = prevColor;
 }
 
+/**
+ * Draws the informational text upon losing a life.
+ */
 var drawMinusLife = () => {
     let prevColor = ctx.fillStyle;
     ctx.fillStyle = warningColor;
@@ -29,6 +38,9 @@ var drawMinusLife = () => {
     ctx.fillStyle = prevColor;
 }
 
+/**
+ * Draws the gameover text upon losing the game entirely
+ */
 var drawGameOver = () => {
     let prevColor = ctx.fillStyle;
     ctx.fillStyle = warningColor;
@@ -37,14 +49,15 @@ var drawGameOver = () => {
 }
 
 var drawUI = () => {
-    ctx.font.fontsize *= 2;
+    ctx.font = "16px Arial";
     drawLifeCount();
     drawScore();
     if (mainPlayer.invincible) {
+        // A player is invincible when they have just died, and this text will remain until
+        // They can take damage again
         drawMinusLife();
     }
     if (!gameActive) {
         drawGameOver();
     }
-    ctx.font.fontsize /= 2;
 }

@@ -6,13 +6,13 @@ const baseFigure = [
     [10, 0], [10, -4], [9, -5], [9, -6], [8, -7], [7, -8], [6, -9], [5, -10], [4, -10], [3, -11], [-3, -11],
 ];
 
-var makeFreshAsteroid = function() {
+var makeFreshAsteroid = () => {
     let randSize = randFrom(1, 3);
     let y = randFrom(0, canvas.height);
     makeAsteroid(0, y, randSize);
 }
 
-var makeAsteroid = function (x, y, scale) {
+var makeAsteroid = (x, y, scale) => {
     //TODO: Give a random starting coordinate on the boundaries of the canvas
     let coordinate = { x: x, y: y };
     let rotation = randFrom(0, 360);
@@ -60,10 +60,12 @@ class Asteroid extends GameObject {
     }
 
     takeFire() {
-        score += this.size * 20;
-        console.log("Taking fire")
+        // Bigger asteroids should give more points
+        score += this.size * settings.score.destroyAsteroid;
         removeObject(this);
         if (this.size > 1) {
+            // If the asteroid is not of the smallest size, spawn a random number of asteroids
+            // one size smaller
             let numSpawn = randFrom(2, 4);
             for(let i = 0; i < numSpawn; i++) {
                 makeAsteroid(this.x, this.y, this.size - 1);

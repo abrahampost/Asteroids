@@ -1,6 +1,3 @@
-const MAX_SPEED = 10;
-const MAX_BULLETS = 3;
-
 const playerFigure = [
     [0, 0],
     [7, 14],
@@ -8,7 +5,7 @@ const playerFigure = [
     [-7, 14],
 ];
 
-class Player extends GameObject{
+class Player extends GameObject {
     constructor(x, y) {
         super(x, y, 0, 0, playerFigure, false);
         this.acceleration = 2;
@@ -21,7 +18,7 @@ class Player extends GameObject{
         this.checkInput();
         this.updateSpeeds();
     }
-    
+
     checkInput() {
         if (pressed.UP) {
             this.changeSpeed(this.acceleration);
@@ -50,10 +47,10 @@ class Player extends GameObject{
     }
 
     changeSpeed(amount) {
-        if (amount > 0 && this.speed < MAX_SPEED) {
+        if (amount > 0 && this.speed < settings.player.maxSpeed) {
             this.speed += amount;
         }
-        if (amount < 0 && this.speed > -MAX_SPEED) {
+        if (amount < 0 && this.speed > -settings.player.maxSpeed) {
             this.speed += amount;
         }
     }
@@ -63,35 +60,60 @@ class Player extends GameObject{
     }
 
     fire() {
-        if (this.bulletsFired < MAX_BULLETS && this.canFire) {
+        if (this.bulletsFired < settings.player.maxBullets && this.canFire) {
             let bullet = new Bullet(this.x, this.y, this.rotation, 12);
             this.bulletsFired += 1;
-            this.canFire = false; //This acts as a bullet cooldown
-            setTimeout(() => {
-                this.canFire = true;
-            }, 500);
-            setTimeout(() => {
-                gameObjects = gameObjects.filter((obj) => {
-                    return obj !== bullet;
-                });
-                this.bulletsFired -= 1;
-            }, 1500)
+            this.bulletCooldown(settings.player.bulletCooldown);
+            this.removeBulletAfter(bullet, settings.player.bulletLifetime); //removes bullet after certain amount of time
         }
     }
 
+    /**
+     * Handles collisions with asteroids
+     */
     handleCollision() {
-        score -= 100;
+        score -= settings.score.loseLife;
         if (lives === 0) {
-            console.log("Called game over");
+            // Out of lives, game should end
             gameOver();
         } else {
+            // If game continues, remove life and reset player position to center of screen
             lives -= 1;
             this.x = canvas.width / 2;
             this.y = canvas.height / 2;
             this.invincible = true;
-            setTimeout(() => {
-                this.invincible = false
-            }, 3000);
+            this.invincibilityCooldown(settings.player.invincibilityCooldown);
         }
+    }
+
+    /**
+     * Prevents firing until the bullet cooldown timer has elapsed
+     * @param {Number} time 
+     */
+    bulletCooldown(time) {
+        this.canFire = false; //This acts as a bullet cooldown
+        setTimeout(() => {
+            this.canFire = true;
+        }, time);
+    }
+
+    /**
+     * Removes a bullet after a specified amount of time has elapsed.
+     * @param {Bullet} bullet 
+     * @param {Number} time 
+     */
+    removeBulletAfter(bullet, time) {
+        setTimeout(() => {
+            gameObjects = gameObjects.filter((obj) => {
+                return obj !== bullet;
+            });
+            this.bulletsFired -= 1;
+        }, time)
+    }
+
+    invincibilityCooldown(time) {
+        setTimeout(() => {
+            this.invincible = false
+        }, time);
     }
 }

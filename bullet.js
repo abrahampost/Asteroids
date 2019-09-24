@@ -1,3 +1,4 @@
+// Bullet figure is a 2x2 block on the canvas
 const bulletFigure = [
     [-2, -2], [2, -2],
     [2, 2], [-2, 2]
@@ -12,6 +13,9 @@ class Bullet extends GameObject {
         this.checkCollision();
     }
 
+    /**
+     * Checks to see if the bullet has collided with an asteroid. If so, trigger the collision handler
+     */
     checkCollision() {
         for (let obj of gameObjects) {
             //TODO: Keep list of asteroids to avoid type checking
